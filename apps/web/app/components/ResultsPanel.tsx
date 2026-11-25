@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { AlertTriangle, Sparkles, FileWarning, CheckCircle2, ShieldAlert } from "lucide-react";
 
-export function ResultsPanel({ orgName, report }: { orgName: string; report: any }) {
+export function ResultsPanel({ orgName, report, scores }: { orgName: string; report: any; scores?: Record<string, number | null> }) {
   const [decision, setDecision] = useState("undecided");
   const [rating, setRating] = useState<number | null>(null);
   const c = report.constructPercentages;
@@ -10,10 +10,33 @@ export function ResultsPanel({ orgName, report }: { orgName: string; report: any
   const dvList = [
     { code: "DV1", label: "Financial (FIP)", ok: c.IV4 >= 50 },
     { code: "DV2", label: "Legal/Reg (LCP)", ok: c.IV2 >= 60 && c.IV3 >= 60 },
-    { code: "DV3", label: "Cybersecurity (CSP)", ok: c.IV2 >= 60 },
-    { code: "DV4", label: "Operational (OPP)", ok: c.IV4 >= 60 },
+    { code: "DV3", label: "Cybersecurity (CDP)", ok: c.IV2 >= 60 },
+    { code: "DV4", label: "Operational (OSP)", ok: c.IV4 >= 60 },
     { code: "DV5", label: "Reputation (RVP)", ok: !report.isGovernanceTheatre && report.healthScore >= 55 },
   ];
+
+  const incidentActions: any[] = [];
+  if (scores) {
+    const mDefs = [
+      { id: "M1", name: "Harm Severity", ref: "OECD AIM / MMAAII / UU PDP Art. 46" },
+      { id: "M2", name: "Stakeholder Reach", ref: "OECD AIM / AIAAIC / EU AI Act Art. 73" },
+      { id: "M3", name: "Organizational Consequence", ref: "OJK / Komdigi / Tribunal Sanction Cure" },
+    ];
+    for (const m of mDefs) {
+      const val = scores[m.id];
+      if (typeof val === "number" && val > 0) {
+        incidentActions.push({
+          id: m.id,
+          phase: "Days 1–30",
+          status: `Score ${val}/3 — Active Incident Containment`,
+          advice: `Execute 72-hour root-cause containment, stakeholder redress, and Safe-Harbor disclosure for ${m.name}.`,
+          reg: m.ref,
+        });
+      }
+    }
+  }
+
+  const fullRoadmap = [...incidentActions, ...report.roadmap];
 
   return (
     <div className="space-y-4">
@@ -40,7 +63,7 @@ export function ResultsPanel({ orgName, report }: { orgName: string; report: any
             {dvList.map((d) => (
               <div key={d.code} className={`p-1.5 rounded border text-[10px] ${d.ok ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-300" : "bg-rose-950/40 border-rose-500/30 text-rose-300"}`}>
                 <p className="font-bold">{d.code}</p>
-                <p className="truncate">{d.label.split(" ")[0]}</p>
+                <p className="truncate">{d.label.split(" ")}</p>
                 <p className="font-bold mt-0.5">{d.ok ? "Safe" : "At Risk"}</p>
               </div>
             ))}
@@ -49,9 +72,9 @@ export function ResultsPanel({ orgName, report }: { orgName: string; report: any
       </div>
 
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-        <h3 className="text-sm font-bold text-white mb-2 flex items-center gap-1.5"><Sparkles className="w-4 h-4 text-amber-400" /> 30-60-90 Day Remediation Plan ({report.roadmap.length})</h3>
+        <h3 className="text-sm font-bold text-white mb-2 flex items-center gap-1.5"><Sparkles className="w-4 h-4 text-amber-400" /> 30-60-90 Day Remediation Plan ({fullRoadmap.length})</h3>
         <div className="space-y-2 max-h-44 overflow-y-auto pr-1">
-          {report.roadmap.map((r: any) => (
+          {fullRoadmap.map((r: any) => (
             <div key={r.id} className="p-2.5 bg-slate-950 border border-slate-800 rounded text-xs">
               <p className="font-bold text-emerald-400">{r.id} ({r.phase}) — <span className="text-amber-400">{r.status}</span></p>
               <p className="text-slate-200 mt-0.5">{r.advice}</p>
@@ -62,7 +85,7 @@ export function ResultsPanel({ orgName, report }: { orgName: string; report: any
       </div>
 
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
-        <h3 className="text-sm font-bold text-white">Closing Decision & Incident Risk</h3>
+        <h3 className="text-sm font-bold text-white">Closing Decision &amp; Incident Risk</h3>
         <div className="grid grid-cols-2 gap-2">
           <button onClick={() => setDecision("committed")} className={`p-2 rounded text-xs font-bold border ${decision === "committed" ? "bg-emerald-500 text-slate-950" : "bg-slate-950 text-slate-300 border-slate-700"}`}>Commit 30-60-90 Fix</button>
           <button onClick={() => setDecision("inaction")} className={`p-2 rounded text-xs font-bold border ${decision === "inaction" ? "bg-rose-600 text-white" : "bg-slate-950 text-slate-300 border-slate-700"}`}>Do Nothing (Accept Risk)</button>

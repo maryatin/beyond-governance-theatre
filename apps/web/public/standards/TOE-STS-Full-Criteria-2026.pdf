@@ -1,0 +1,38 @@
+%PDF-1.4
+1 0 obj<< /Type /Catalog /Pages 2 0 R >>endobj
+2 0 obj<< /Type /Pages /Kids [3 0 R] /Count 1 >>endobj
+3 0 obj<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>endobj
+4 0 obj<< /Length 2241 >>stream
+BT /F1 11 Tf 45 740 Td (BEYOND GOVERNANCE THEATRE - FULL TOE-STS MEASUREMENT RUBRIC) Tj ET
+BT /F1 11 Tf 45 722 Td (c 2026 Maryatin Gunadi ORCID: 0009-0001-8988-5372, President University) Tj ET
+BT /F1 11 Tf 45 704 Td (Scale: 0=Missing | 1=Informal/General IT | 2=AI-Specific | NA=Unverified Non-Imputed) Tj ET
+BT /F1 11 Tf 45 686 Td (IV1.1: Public AI Ethics Charter | ID: SE Menkominfo 9/2023 | Intl: ISO/IEC 42001 5.2) Tj ET
+BT /F1 11 Tf 45 668 Td (IV1.2: Fairness & Bias Mitigation | ID: UU PDP Pasal 10 | Intl: EU AI Act Art. 10) Tj ET
+BT /F1 11 Tf 45 650 Td (IV1.3: Human-in-the-Loop HITL Oversight | ID: OJK AI Guidelines | Intl: EU AI Act Art. 14) Tj ET
+BT /F1 11 Tf 45 632 Td (IV1.4: Stakeholder AI Disclosure | ID: UU PDP Pasal 20 | Intl: EU AI Act Art. 50) Tj ET
+BT /F1 11 Tf 45 614 Td (IV2.1: Formal AI Impact Assessment DPIA | ID: UU PDP Pasal 34 | Intl: ISO/IEC 42001 6.1.2) Tj ET
+BT /F1 11 Tf 45 596 Td (IV2.2: Pre-Deployment Safety Guardrails | ID: UU PDP Pasal 35 | Intl: OWASP LLM Top 10) Tj ET
+BT /F1 11 Tf 45 578 Td (IV2.3: Adversarial Red-Teaming | ID: OJK IT Risk Rules | Intl: NIST AI RMF MEASURE 2.6) Tj ET
+BT /F1 11 Tf 45 560 Td (IV2.4: Data Provenance & Lineage | ID: UU PDP Pasal 16 & 57 | Intl: GDPR Art. 5 & 83) Tj ET
+BT /F1 11 Tf 45 542 Td (IV3.1: Executive AI Governance Committee | ID: POJK Tata Kelola TI | Intl: ISO/IEC 42001 5.1) Tj ET
+BT /F1 11 Tf 45 524 Td (IV3.2: AI Procurement & Acceptable Use SOP | ID: UU PDP Pasal 51 | Intl: NIST AI RMF GOVERN 6.1) Tj ET
+BT /F1 11 Tf 45 506 Td (IV3.3: External Independent AI Audit | ID: OJK External Audit | Intl: ISO/IEC 42001 9.2) Tj ET
+BT /F1 11 Tf 45 488 Td (IV3.4: AI Incident Escalation & Kill-Switch | ID: UU PDP Pasal 46 72h | Intl: EU AI Act Art. 73) Tj ET
+BT /F1 11 Tf 45 470 Td (IV4.1: Dedicated AI Safety Budget | ID: POJK Rencana Bisnis | Intl: ISO/IEC 42001 7.1) Tj ET
+BT /F1 11 Tf 45 452 Td (IV4.2: Workforce AI Risk Literacy | ID: SE Menkominfo Etika AI | Intl: EU AI Act Art. 4) Tj ET
+BT /F1 11 Tf 45 434 Td (IV4.3: Production Drift & Safety Telemetry | ID: OJK Operational Monitoring | Intl: NIST AI RMF MEASURE 2.4) Tj ET
+BT /F1 11 Tf 45 416 Td (IV4.4: Legal-Tech-Ethics Review Loop | ID: UU PDP DPO Pasal 53 | Intl: NIST AI RMF GOVERN 3.1) Tj ET
+endstream endobj
+5 0 obj<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000229 00000 n 
+0000000330 00000 n 
+trailer<< /Size 6 /Root 1 0 R >>
+startxref
+2631
+%%EOF
