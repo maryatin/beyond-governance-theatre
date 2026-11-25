@@ -1,0 +1,16 @@
+node_modules/
+.next/
+dist/
+build/
+.env
+.env.local
+*.log
+.DS_Store
+
+# CONFIDENTIAL DISSERTATION DATA QUARANTINE (NEVER PUSH)
+confidential-data/
+*.xlsx
+*.xls
+*.csv
+*.jasp
+*.sav
