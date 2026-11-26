@@ -61,3 +61,4 @@ Original Creation Date: November 2026. Patent & Copyright Protected.
 - **Affiliation:** Doctoral Program in Management — Management Information Systems, President University
 - **Correspondence Address:** Jalan Ki Hajar Dewantara, Kota Jababeka, Cikarang Baru, Bekasi Regency 17550, West Java, Indonesia
 
+
