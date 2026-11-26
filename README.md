@@ -2,6 +2,8 @@
 
 **Preventing Organizational AI Incidents to Unlock Audited Performance**
 
+**Live Interactive Platform:** [https://<your-vercel-url>.vercel.app](https://<your-vercel-url>.vercel.app)
+
 [![ORCID](https://shields.io)](https://orcid.org)
 [![Research Stage](https://shields.io)](#3-research-roadmap--data-governance)
 [![Copyright](https://shields.io)](#4-intellectual-property--citation)
@@ -58,3 +60,4 @@ Original Creation Date: November 2026. Patent & Copyright Protected.
 - **GitHub Repository:** [https://github.com](https://github.com)
 - **Affiliation:** Doctoral Program in Management — Management Information Systems, President University
 - **Correspondence Address:** Jalan Ki Hajar Dewantara, Kota Jababeka, Cikarang Baru, Bekasi Regency 17550, West Java, Indonesia
+
