@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Scale, Activity, Lock, BookOpen, Shield, Mail, ExternalLink } from "lucide-react";
 import { AccessCheckoutModal } from "./AccessCheckoutModal";
-import { INDICATORS } from "../../../../packages/rubric-engine/src/index.js";
+import { INDICATORS, evaluateOrganizationHealth } from "../../../../packages/rubric-engine/src/index.js";
 
 const MMAAII_ID = ["https://", "mmaaii", ".engagemedia.org/", "id/"].join("");
 
@@ -32,6 +32,7 @@ const OUTCOME_CRITERIA = [
 
 export function ExtraTabs({ activeTab, jurisdiction, report }: { activeTab: string; jurisdiction: string; report: any }) {
   const [selectedTier, setSelectedTier] = useState<{ name: string; price: string; desc: string } | null>(null);
+  const [regJurisdiction, setRegJurisdiction] = useState<"Indonesia" | "International">(jurisdiction === "International" ? "International" : "Indonesia");
 
   if (activeTab === "criteria") {
     return (
@@ -158,7 +159,6 @@ export function ExtraTabs({ activeTab, jurisdiction, report }: { activeTab: stri
       </section>
     );
   }
-
   if (activeTab === "docs") {
     return (
       <section className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-5 text-xs text-slate-300">
@@ -171,15 +171,15 @@ export function ExtraTabs({ activeTab, jurisdiction, report }: { activeTab: stri
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-slate-950 border border-slate-800 rounded-lg space-y-2">
-            <h3 className="font-bold text-white text-sm">1. Standard Operating Procedure</h3>
+            <h3 className="font-bold text-white text-sm">1. Standard Operating Procedure &amp; Psychometrics (JASP v0.19)</h3>
             <p><strong>A. Document Ingestion:</strong> Upload Corporate Annual Report (PDF) or AI Charter in Tab 1.</p>
-            <p><strong>B. Psychometric Coding:</strong> Evaluates 16 antecedents (IV1.1–IV4.4) and incident exposure (M1–M3) with strict non-imputation (NA ≠ 0).</p>
-            <p><strong>C. Remediation &amp; Re-Audit:</strong> Execute the 30-60-90 day plan and generate a Board Audit Certificate.</p>
+            <p><strong>B. 24-Indicator Coding:</strong> Evaluates 16 antecedents (IV1.1–IV4.4, ω = 0.81–0.87, KMO = 0.84) and 3 incident items (M1–M3, VIF &lt; 3.30) with strict non-imputation (NA ≠ 0).</p>
+            <p><strong>C. Remediation &amp; Re-Audit:</strong> Execute the 30-60-90 day plan to protect audited FY2025 performance (DV1_FIP–DV4_OSP, ω = 0.78).</p>
           </div>
           <div className="p-4 bg-slate-950 border border-slate-800 rounded-lg space-y-2">
             <h3 className="font-bold text-white text-sm flex items-center gap-1.5"><Shield className="w-4 h-4 text-amber-400" /> 2. Intellectual Property &amp; Citation</h3>
             <p><strong>Copyright &amp; IP:</strong> © 2026 Maryatin Gunadi. Proprietary Organizational AI Incident Prevention &amp; Performance Engine.</p>
-            <p><strong>Citation:</strong> Gunadi, M. (2026). <em>Beyond Governance Theatre: Preventing Organizational AI Incidents to Unlock Audited Performance</em>. President University.</p>
+            <p><strong>Citation:</strong> Gunadi, M. (2026). <em>Beyond Governance Theatre: Preventing Organizational AI Incidents to Unlock Audited Performance</em>. Doctoral Program in Management, President University.</p>
             <p className="text-emerald-400 flex items-center gap-1 pt-1"><Mail className="w-3.5 h-3.5" /> maryatin.gunadi@doctoral.president.ac.id</p>
           </div>
         </div>
@@ -188,15 +188,26 @@ export function ExtraTabs({ activeTab, jurisdiction, report }: { activeTab: stri
   }
 
   if (activeTab === "regulator") {
+    const activeReport = regJurisdiction === jurisdiction
+      ? report
+      : evaluateOrganizationHealth({ orgName: "Supervisory Audit", sector: "Commercial", jurisdiction: regJurisdiction, scores: report.scores || {} });
     return (
       <section className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2"><Scale className="w-5 h-5 text-amber-400" /> Regulator Supervisory Control Plane ({jurisdiction})</h2>
-        <div className="p-4 bg-slate-950 border border-slate-800 rounded-lg space-y-2">
-          <p className="text-base font-bold text-amber-400">{report.sanctionTier.tier}</p>
-          <p className="text-xs text-slate-300">{report.sanctionTier.ref}</p>
-          <p className="text-xs text-emerald-300 bg-emerald-950/40 p-2.5 rounded border border-emerald-500/30">Safe-Harbor Cure: {report.sanctionTier.safeHarbor}</p>
+        <div className="flex flex-wrap justify-between items-center gap-3">
+          <h2 className="text-lg font-bold text-white flex items-center gap-2"><Scale className="w-5 h-5 text-amber-400" /> Regulator Supervisory Control Plane ({regJurisdiction})</h2>
+          <div className="flex gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800">
+            {(["Indonesia", "International"] as const).map((j) => (
+              <button key={j} onClick={() => setRegJurisdiction(j)} className={`px-3 py-1 rounded text-xs font-bold ${regJurisdiction === j ? "bg-amber-400 text-slate-950" : "text-slate-400 hover:text-white"}`}>{j}</button>
+            ))}
+          </div>
         </div>
-        <p className="text-xs text-slate-400">Empirical Insight (N = 99 Feasibility Sample): Mandatory filings omit 97.7% of publicly documented AI incidents (Chincholikar &amp; Chawla, 2026), while 70.7% (70/99; 100% in Indonesia) publish audited FY2025 performance records. A 90-Day Safe-Harbor Cure Window incentivizes transparent reporting.</p>
+        <div className="p-4 bg-slate-950 border border-slate-800 rounded-lg space-y-2">
+          <p className="text-base font-bold text-amber-400">{activeReport.sanctionTier.tier}</p>
+          <p className="text-xs text-slate-300">{regJurisdiction === "Indonesia" ? "UU PDP No. 27/2022 Art. 57 (Fines up to 2% Annual Revenue), POJK No. 11/2022 & SE Menkominfo No. 9/2023" : "Multi-Jurisdictional Exposure — Statutory penalties depend on operating country & sector (see verified statutory table below)"}</p>
+          <p className="text-xs text-emerald-300 bg-emerald-950/40 p-2.5 rounded border border-emerald-500/30">Safe-Harbor Cure: {activeReport.sanctionTier.safeHarbor}</p>
+          
+        </div>
+        <div className="mt-4 pt-4 border-t border-slate-800 space-y-3 text-[11px] text-slate-400"><p className="font-bold text-slate-200 uppercase tracking-wider">Footnotes, Global Regulatory Findings &amp; Live Statutory Trackers</p><ol className="list-decimal pl-4 space-y-1.5 leading-relaxed"><li><strong className="text-white">Global Coverage Across 190+ Countries (5 Regulatory Archetypes):</strong> Because standalone AI laws are actively evolving worldwide, no static list can exhaustively cover every national penalty. Across our N = 99 feasibility jurisdictions and global benchmarks, oversight falls into five archetypes: (a) <em>Risk-Based AI Statutes</em> (e.g., EU AI Act 2024/1689 Art. 99 up to EUR 35M or 7% global turnover; South Korea AI Basic Act up to KRW 30M); (b) <em>Data &amp; Algorithmic Privacy Laws</em> (e.g., Indonesia UU PDP No. 27/2022 up to 2% annual revenue; Malaysia PDPA Amend. 2024 up to RM 1M / 3 yrs; Singapore PDPA up to SGD 1M or 10% local turnover; China PIPL Art. 66 up to RMB 50M or 5% revenue); (c) <em>Sectoral &amp; Civil/Tribunal Enforcement</em> (e.g., US FTC Act §5, SEC Item 1C/16K, Canada <em>Moffatt v. Air Canada</em>, 2024 BCCRT 149); (d) <em>Voluntary Soft-Law &amp; Technical Standards</em> (ISO/IEC 42001:2023, NIST AI RMF 1.0, Japan METI/MIC Guidelines, Malaysia AIGE 2024, Singapore AI Verify, Australia AI Safety Standard); and (e) <em>Uncodified / Emerging Jurisdictions (~130+ UN states)</em> governed by general consumer, penal, constitutional, and civil tort laws pending dedicated AI statutes.</li><li><strong className="text-white">Live Intergovernmental Trackers (All Countries):</strong> For real-time statutory status in any country not individually listed above, consult the <a href="https://oecd.ai" target="_blank" rel="noopener noreferrer" className="text-sky-300 underline">OECD.AI Policy Observatory</a>, <a href="https://unctad.org" target="_blank" rel="noopener noreferrer" className="text-sky-300 underline">UNCTAD Global Cyberlaw Tracker</a>, <a href="https://iapp.org" target="_blank" rel="noopener noreferrer" className="text-sky-300 underline">IAPP Global AI Legislation Tracker</a>, and <a href="https://unesco.org" target="_blank" rel="noopener noreferrer" className="text-sky-300 underline">UNESCO AI Ethics Observatory</a>.</li><li><strong className="text-white">Empirical Disclosure Shadow Finding (DP Feasibility Cohort, N = 99):</strong> Mandatory corporate filings omit 97.7% of publicly documented AI incidents (Chincholikar &amp; Chawla, 2026), while 70.7% (70/99; 100% Indonesia, 65.9% International) publish audited FY2025 performance records. A 90-Day Safe-Harbor Cure Window incentivizes voluntary self-audit and transparent reporting.</li><li><strong className="text-amber-300">Non-Legal-Advice Disclaimer:</strong> Statutory penalties and regulatory classifications summarized on this page are provided strictly for academic research and diagnostic benchmarking and do not constitute formal legal counsel. Organizations must verify applicable obligations with qualified local legal counsel in each operating jurisdiction.</li></ol></div>
       </section>
     );
   }
@@ -220,14 +231,12 @@ export function ExtraTabs({ activeTab, jurisdiction, report }: { activeTab: stri
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {rows.map((r) => (
             <div key={r.s} className="p-4 bg-slate-950 border border-slate-800 rounded-lg text-xs space-y-1">
-              <div className="flex justify-between items-center">
-                <p className="font-bold text-white text-sm">{r.s}</p>
-                <span className="text-[11px] font-mono text-slate-400">{r.n}</span>
-              </div>
+              <p className="font-bold text-white text-sm">{r.s}</p>
+              <p className="text-[11px] font-mono text-sky-300">{r.n}</p>
               <p className="text-slate-400">Policy (IV1): <strong className="text-emerald-400">{r.p}</strong></p>
               <p className="text-slate-400">Tech (IV2): <strong className="text-amber-400">{r.t}</strong></p>
-              <p className="text-slate-400">Theatre Rate: <strong className="text-rose-400">{r.g}</strong></p>
-              <p className="text-slate-400">Audited FY25 DV: <strong className="text-emerald-300">{r.dv}</strong></p><p className="text-slate-400">Incident Mean (M): <strong className="text-sky-300">{r.m}</strong></p>
+              <p className="text-slate-400">Audited FY25 DV: <strong className="text-emerald-300">{r.dv}</strong></p>
+              <p className="text-slate-400">Incident Mean (M): <strong className="text-rose-300">{r.m}</strong></p>
             </div>
           ))}
         </div>
@@ -244,11 +253,9 @@ export function ExtraTabs({ activeTab, jurisdiction, report }: { activeTab: stri
     <>
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {tiers.map((t) => (
-          <div key={t.name} className="p-6 bg-slate-900 border border-slate-800 rounded-xl space-y-3">
-            <h3 className="font-bold text-white">{t.name}</h3>
+          <div key={t.name} className="p-6 bg-slate-900 border border-slate-800 rounded-xl flex flex-col justify-between gap-4"><div className="space-y-3"><h3 className="font-bold text-white">{t.name}</h3>
             <p className="text-2xl font-extrabold text-emerald-400">{t.price}</p>
-            <p className="text-xs text-slate-400">{t.desc}</p>
-            <button onClick={() => setSelectedTier(t)} className="w-full py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs">Request Access &amp; Billing</button>
+            <p className="text-xs text-slate-400">{t.desc}</p></div><button onClick={() => setSelectedTier(t)} className="w-full py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs">Request Access &amp; Billing</button>
           </div>
         ))}
       </section>
@@ -256,5 +263,8 @@ export function ExtraTabs({ activeTab, jurisdiction, report }: { activeTab: stri
     </>
   );
 }
+
+
+
 
 
